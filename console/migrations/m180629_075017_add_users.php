@@ -40,7 +40,7 @@ class m180629_075017_add_users extends Migration
                     time(),
                     time(),
                 ],
-        ]);
+            ]);
     }
 
     /**
@@ -48,9 +48,7 @@ class m180629_075017_add_users extends Migration
      */
     public function safeDown()
     {
-        echo "m180629_075017_add_users cannot be reverted.\n";
-
-        return false;
+        $this->delete('user', ['id' => [1, 2]]);
     }
 
     /*
