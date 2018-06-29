@@ -1,4 +1,5 @@
 <?php
+
 namespace common\models;
 
 use Yii;
@@ -20,6 +21,9 @@ use yii\web\IdentityInterface;
  * @property integer $created_at
  * @property integer $updated_at
  * @property string $password write-only password
+ *
+ * @property Message[] $inbox
+ * @property Message[] $sent
  */
 class User extends ActiveRecord implements IdentityInterface
 {
@@ -113,7 +117,7 @@ class User extends ActiveRecord implements IdentityInterface
             return false;
         }
 
-        $timestamp = (int) substr($token, strrpos($token, '_') + 1);
+        $timestamp = (int)substr($token, strrpos($token, '_') + 1);
         $expire = Yii::$app->params['user.passwordResetTokenExpire'];
         return $timestamp + $expire >= time();
     }
@@ -185,5 +189,25 @@ class User extends ActiveRecord implements IdentityInterface
     public function removePasswordResetToken()
     {
         $this->password_reset_token = null;
+    }
+
+    /**
+     * Returns a relational query for messages sent to this user
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getInbox()
+    {
+        return $this->hasMany(Message::class, ['to' => 'id']);
+    }
+
+    /**
+     * Returns a relational query for messages sent from this user
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getSent()
+    {
+        return $this->hasMany(Message::class, ['from' => 'id']);
     }
 }
