@@ -1,11 +1,12 @@
 <?php
 return [
+    'language' => 'ru-RU',
     'components' => [
         'db' => [
             'class' => 'yii\db\Connection',
-            'dsn' => 'mysql:host=localhost;dbname=yii2advanced',
+            'dsn' => 'mysql:host=localhost;dbname=messenger',
             'username' => 'root',
-            'password' => '',
+            'password' => 'mysql',
             'charset' => 'utf8',
         ],
         'mailer' => [
@@ -15,6 +16,13 @@ return [
             // 'useFileTransport' to false and configure a transport
             // for the mailer to send real emails.
             'useFileTransport' => true,
+        ],
+        'i18n' => [
+            'translations' => [
+                'app*' => [
+                    'class' => 'yii\i18n\PhpMessageSource',
+                ],
+            ],
         ],
     ],
 ];
