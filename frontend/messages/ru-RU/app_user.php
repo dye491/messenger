@@ -7,4 +7,7 @@ return [
     'Signup' => 'Регистрация',
     'Submit' => 'Отправить',
     'Please fill out the following fields to signup' => 'Пожалуйста, заполните поля регистрационной формы',
+    'Login' => 'Вход',
+    'Logout' => 'Выход',
+    'Profile' => 'Профиль',
 ];
