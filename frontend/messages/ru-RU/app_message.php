@@ -9,4 +9,5 @@ return [
     'Search' => 'Найти',
     'Reset' => 'Сброс фильтра',
     'Messages' => 'Сообщения',
+    'Dialog with ' => 'Диалог с ',
 ];
