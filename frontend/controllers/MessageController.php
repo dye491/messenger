@@ -2,6 +2,7 @@
 
 namespace frontend\controllers;
 
+use common\models\User;
 use Yii;
 use common\models\Message;
 use common\models\MessageSearch;
@@ -31,7 +32,7 @@ class MessageController extends Controller
             ],
             'access' => [
                 'class' => AccessControl::class,
-                'only' => ['inbox', 'sent'],
+                'only' => ['inbox', 'sent', 'dialog'],
                 'rules' => [
                     [
                         'allow' => true,
@@ -155,5 +156,19 @@ class MessageController extends Controller
         }
 
         throw new NotFoundHttpException(Yii::t('app_message', 'The requested page does not exist.'));
+    }
+
+    public function actionDialog($friend_id)
+    {
+        $searchModel = new MessageSearch();
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        $dataProvider->query->andFilterWhere(['or', ['to' => $friend_id], ['from' => $friend_id]])
+            ->orderBy(['id' => SORT_DESC]);
+
+        return $this->render('dialog', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+            'friendName' => User::findOne(['id' => $friend_id])->username,
+        ]);
     }
 }
