@@ -12,6 +12,7 @@ use Yii;
  * @property int $to
  * @property string $text
  * @property int $created_at
+ * @property boolean $new
  *
  * @property User $sender
  * @property User $recipient
@@ -74,8 +75,10 @@ class Message extends yii\db\ActiveRecord
      */
     public function beforeSave($insert)
     {
-        if ($insert)
+        if ($insert) {
             $this->created_at = time();
+            $this->new = true;
+        }
 
         return parent::beforeSave($insert);
     }
