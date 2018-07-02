@@ -9,7 +9,8 @@ use yii\helpers\Html;
 
 $sent = $model->sender->id == Yii::$app->user->id;
 ?>
-<div class="panel<?= $sent ? ' panel-success' : ' panel-default' ?>">
+<div class="panel<?= $sent ? ' panel-success' : ' panel-default' ?>"
+     style="<?= $sent ? 'margin-left' : 'margin-right' ?>: 50px;">
     <div class="panel-heading">
         <?= 'Отправлено ' . date('D H:i:s', $model->created_at) . ', ' . ($sent ? 'Вы ' : $model->sender->username) . ':' ?>
     </div>
@@ -17,6 +18,6 @@ $sent = $model->sender->id == Yii::$app->user->id;
         <?= Html::encode($model->text) ?>
     </div>
     <!--<div class="panel-footer">
-        <?/*= 'Отправлено ' . date('D H:i:s', $model->created_at) */?>
+        <? /*= 'Отправлено ' . date('D H:i:s', $model->created_at) */ ?>
     </div>-->
 </div>

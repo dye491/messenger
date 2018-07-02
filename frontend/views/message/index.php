@@ -31,7 +31,7 @@ $this->params['breadcrumbs'][] = $this->title;
             [
                 'attribute' => 'created_at',
                 'value' => function ($model) {
-                    return date('Y-m-d H:i:s', $model->created_at);
+                    return date('D H:i', $model->created_at);
                 },
                 'options' => ['width' => '20%'],
             ],
