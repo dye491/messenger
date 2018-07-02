@@ -244,4 +244,52 @@ class User extends ActiveRecord implements IdentityInterface
     {
         return $this->hasMany(User::class, ['id' => 'user_id'])->viaTable('contact', ['contact_id' => 'id']);
     }
+
+    /**
+     * Returns true if user with given id has contact with this user (direct or reverse)
+     *
+     * @param $id
+     * @return bool
+     */
+    public function hasContactWith($id)
+    {
+        $result = $this->getContacts()->where(['id' => $id])->exists();
+
+        if ($result) return true;
+
+        $result = $this->getInverseContacts()->where(['id' => $id])->exists();
+
+        if ($result) return true;
+
+        return false;
+    }
+
+    /**
+     * Sets online status of the user
+     *
+     * @param bool $state
+     */
+    public function setOnline($state = true)
+    {
+        $this->online = $state;
+        $this->save();
+    }
+
+    /**
+     * @param null $user_id
+     * @return int|string
+     */
+    public function getNewMessageCount($user_id = null)
+    {
+        $query = Message::find()->where([
+            'to' => $this->id,
+            'new' => true,
+        ]);
+
+        if ($user_id) {
+            $query->andWhere(['from' => $user_id]);
+        }
+
+        return $query->count();
+    }
 }

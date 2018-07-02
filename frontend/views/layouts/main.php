@@ -66,7 +66,7 @@ AppAsset::register($this);
         $menuItems[] = [
             'label' => Yii::$app->user->identity->username,
             'items' => [
-                ['label' => Yii::t('app_user', 'Profile'), 'url' => ['/user/profile']],
+                ['label' => Yii::t('app_user', 'Profile'), 'url' => ['/profile/view', 'id' => Yii::$app->user->id]],
                 '<li><hr style="margin: 0"></li>',
                 '<li>'
                 . Html::beginForm(['/site/logout'], 'post')
