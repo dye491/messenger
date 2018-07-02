@@ -15,7 +15,7 @@ $this->params['breadcrumbs'][] = $this->title;
 <div class="message-index">
 
     <h1><?= Html::encode($this->title) ?></h1>
-    <?php Pjax::begin(); ?>
+    <?php Pjax::begin(['linkSelector' => false]); ?>
     <?php echo $this->render('_search', ['model' => $searchModel]); ?>
 
     <!--    <p>-->

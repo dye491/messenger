@@ -28,7 +28,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <?php ActiveForm::end() ?>
 
     <?= ListView::widget([
-        'layout' => '{items}\n{pager}',
+        'layout' => "{items}\n{pager}",
         'dataProvider' => $dataProvider,
         'itemOptions' => ['class' => 'item'],
         'itemView' => '_item',
