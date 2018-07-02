@@ -17,11 +17,14 @@ use yii\widgets\ActiveForm;
         ],
     ]); ?>
 
-    <?= $form->field($model, 'username') ?>
+    <?= $form->field($model, 'username', ['inputOptions' => [
+        'placeholder' => Yii::t('app_user','Search'),
+        'class' => 'form-control',
+    ]]) ?>
 
     <?= $form->field($model, 'online')->checkbox([
         'uncheck' => '',
-        'label' => 'Online only',
+        'label' => Yii::t('app_user','Online only'),
         'onchange' => 'submit()',
     ]) ?>
 
