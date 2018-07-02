@@ -42,7 +42,7 @@ class MessageSearch extends Message
      */
     public function search($params)
     {
-        $query = Message::find();
+        $query = Message::find()->orderBy(['id' => SORT_DESC]);
 
         // add conditions that should always apply here
 

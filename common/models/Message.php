@@ -16,7 +16,7 @@ use Yii;
  * @property User $sender
  * @property User $recipient
  */
-class Message extends \yii\db\ActiveRecord
+class Message extends yii\db\ActiveRecord
 {
     /**
      * {@inheritdoc}
@@ -67,5 +67,16 @@ class Message extends \yii\db\ActiveRecord
     public function getRecipient()
     {
         return $this->hasOne(User::class, ['id' => 'to']);
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function beforeSave($insert)
+    {
+        if ($insert)
+            $this->created_at = time();
+
+        return parent::beforeSave($insert);
     }
 }

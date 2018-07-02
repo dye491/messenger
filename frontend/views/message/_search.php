@@ -17,7 +17,11 @@ use yii\widgets\ActiveForm;
         ],
     ]); ?>
 
-    <?= $form->field($model, 'text', ['inputOptions' => ['placeholder' => 'Search', 'class' => 'form-control']]) ?>
+    <?= $form->field($model, 'text', [
+        'inputOptions' => [
+            'placeholder' => Yii::t('app_message','Search'),
+            'class' => 'form-control'],
+    ])->label(false) ?>
 
     <?php ActiveForm::end(); ?>
 

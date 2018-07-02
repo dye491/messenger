@@ -3,12 +3,14 @@
 use yii\helpers\Html;
 use yii\widgets\ListView;
 use yii\widgets\Pjax;
+use yii\widgets\ActiveForm;
 
 /* @var $this yii\web\View */
 /* @var $dataProvider yii\data\ActiveDataProvider */
-/* @var $friendName string */
+/* @var $model \common\models\Message */
+/* @var $contactName string */
 
-$this->title = Yii::t('app_message', 'Dialog with ') . $friendName;
+$this->title = Yii::t('app_message', 'Dialog with ') . $contactName;
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="message-index">
@@ -16,16 +18,19 @@ $this->params['breadcrumbs'][] = $this->title;
     <h1><?= Html::encode($this->title) ?></h1>
     <?php Pjax::begin(); ?>
 
-    <p>
-        <?= Html::a(Yii::t('app_message', 'Create Message'), ['create'], ['class' => 'btn btn-success']) ?>
-    </p>
+    <? $form = ActiveForm::begin(['options' => ['data-pjax' => 1]]) ?>
+    <?= $form->field($model, 'text', [
+        'inputOptions' => [
+            'class' => 'form-control',
+            'placeholder' => Yii::t('app_message', 'Your text here'),
+        ],
+    ])->label(false) ?>
+    <?php ActiveForm::end() ?>
 
     <?= ListView::widget([
         'dataProvider' => $dataProvider,
         'itemOptions' => ['class' => 'item'],
-        'itemView' => /*function ($model, $key, $index, $widget) {
-            return Html::a(Html::encode($model->id), ['view', 'id' => $model->id]);
-        }*/'_item',
+        'itemView' => '_item',
     ]) ?>
     <?php Pjax::end(); ?>
 </div>

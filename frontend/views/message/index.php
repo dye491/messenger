@@ -38,9 +38,9 @@ $this->params['breadcrumbs'][] = $this->title;
             [
                 'attribute' => $attr,
                 'content' => $attr == 'from' ? function ($model) {
-                    return Html::a($model->sender->username, ['/message/dialog', 'friend_id' => $model->sender->id]);
+                    return Html::a($model->sender->username, ['/message/dialog', 'contact_id' => $model->sender->id]);
                 } : function ($model) {
-                    return Html::a($model->recipient->username, ['/message/dialog', 'friend_id' => $model->recipient->id]);
+                    return Html::a($model->recipient->username, ['/message/dialog', 'contact_id' => $model->recipient->id]);
                 },
                 'options' => ['width' => '20%'],
             ],

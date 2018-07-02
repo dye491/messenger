@@ -10,4 +10,5 @@ return [
     'Reset' => 'Сброс фильтра',
     'Messages' => 'Сообщения',
     'Dialog with ' => 'Диалог с ',
+    'Your text here' => 'Ваш текст здесь',
 ];
