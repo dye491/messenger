@@ -10,7 +10,7 @@ use yii\widgets\ActiveForm;
 <div class="message-search">
 
     <?php $form = ActiveForm::begin([
-        'action' => Yii::$app->controller->action->id,
+//        'action' => Yii::$app->controller->action->id,
         'method' => 'get',
         'options' => [
             'data-pjax' => 1,
