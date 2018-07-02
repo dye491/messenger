@@ -163,14 +163,23 @@ class MessageController extends Controller
     {
         $model = new Message(['from' => Yii::$app->user->id, 'to' => $contact_id]);
 
-        if ($model->load(Yii::$app->request->post()) /*&& $model->save()*/) {
+        if ($model->load(Yii::$app->request->post())) {
             $model->save();
             $model = new Message(['from' => Yii::$app->user->id, 'to' => $contact_id]);
         }
 
-        $dataProvider = new ActiveDataProvider(['query' => Message::find()]);
-        $dataProvider->query->andFilterWhere(['or', ['to' => $contact_id], ['from' => $contact_id]])
-            ->orderBy(['id' => SORT_DESC]);
+        $dataProvider = new ActiveDataProvider([
+            'query' => Message::find()->where(['or',
+                [
+                    'from' => Yii::$app->user->id,
+                    'to' => $contact_id,
+                ],
+                [
+                    'to' => Yii::$app->user->id,
+                    'from' => $contact_id,
+                ],
+            ])->orderBy(['id' => SORT_DESC]),
+        ]);
 
         return $this->render('dialog', [
             'model' => $model,
