@@ -21,6 +21,8 @@ use yii\web\IdentityInterface;
  * @property integer $created_at
  * @property integer $updated_at
  * @property string $password write-only password
+ * @property string $about user's status
+ * @property boolean $online user's online flag
  *
  * @property Message[] $inbox
  * @property Message[] $sent
