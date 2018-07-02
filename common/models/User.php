@@ -5,6 +5,7 @@ namespace common\models;
 use Yii;
 use yii\base\NotSupportedException;
 use yii\behaviors\TimestampBehavior;
+use yii\db\ActiveQueryInterface;
 use yii\db\ActiveRecord;
 use yii\web\IdentityInterface;
 
@@ -26,6 +27,8 @@ use yii\web\IdentityInterface;
  *
  * @property Message[] $inbox
  * @property Message[] $sent
+ * @property User[] $contacts
+ * @property User[] $inverseContacts
  */
 class User extends ActiveRecord implements IdentityInterface
 {
@@ -211,5 +214,34 @@ class User extends ActiveRecord implements IdentityInterface
     public function getSent()
     {
         return $this->hasMany(Message::class, ['from' => 'id']);
+    }
+
+    /**
+     * @return string
+     */
+    public function getBgColor()
+    {
+        $angle = 15 * ($this->id % 12);
+        return "hsl($angle,70%,50%)";
+    }
+
+    /**
+     * Returns a relational query for user's contacts
+     *
+     * @return ActiveQueryInterface
+     */
+    public function getContacts()
+    {
+        return $this->hasMany(User::className(), ['id' => 'contact_id'])->viaTable('contact', ['user_id' => 'id']);
+    }
+
+    /**
+     * Returns a relational query for users who has this user in their contacts
+     *
+     * @return ActiveQueryInterface
+     */
+    public function getInverseContacts()
+    {
+        return $this->hasMany(User::class, ['id' => 'user_id'])->viaTable('contact', ['contact_id' => 'id']);
     }
 }
