@@ -11,4 +11,5 @@ return [
     'Messages' => 'Сообщения',
     'Dialog with ' => 'Диалог с ',
     'Your text here' => 'Ваш текст здесь',
+    'Write' => 'Написать',
 ];
