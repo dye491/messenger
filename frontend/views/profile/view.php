@@ -50,6 +50,7 @@ $this->params['breadcrumbs'][] = $this->title;
         </div>
         <p>
             <?= Html::a(Yii::t('app_user', 'Update'), ['update', 'id' => $model->id], ['class' => 'btn btn-success']) ?>
+            <?= Html::a(Yii::t('app_user', 'Change password'), ['change-password', 'id' => $model->id], ['class' => 'btn btn-warning']) ?>
         </p>
 
     <?php endif; ?>

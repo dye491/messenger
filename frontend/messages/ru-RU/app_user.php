@@ -22,4 +22,11 @@ return [
     'offline' => 'не в сети',
     'In your contacts' => 'У вас в контактах',
     'Add to contacts' => 'Добавить к контактам',
+    'Save' => 'Сохранить',
+    'Update User' => 'Изменить профиль',
+    'Change password' => 'Сменить пароль',
+    'You can edit only your own profile' => 'Вы не можете радактировать чужой профиль',
+    'Old password' => 'Старый пароль',
+    'New password' => 'Новый пароль',
+    'New password saved.' => 'Новый пароль успешно сохранен.',
 ];

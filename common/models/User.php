@@ -62,6 +62,8 @@ class User extends ActiveRecord implements IdentityInterface
         return [
             ['status', 'default', 'value' => self::STATUS_ACTIVE],
             ['status', 'in', 'range' => [self::STATUS_ACTIVE, self::STATUS_DELETED]],
+            ['about', 'string', 'length' => [2, 255]],
+            ['about', 'required'],
         ];
     }
 
@@ -69,6 +71,7 @@ class User extends ActiveRecord implements IdentityInterface
     {
         return [
             'username' => Yii::t('app_user', 'Name'),
+            'about' => Yii::t('app_user', 'About'),0
         ];
     }
 

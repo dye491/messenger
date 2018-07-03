@@ -3,11 +3,13 @@
 namespace frontend\controllers;
 
 use common\models\Contact;
+use frontend\models\ChangePasswordForm;
 use Yii;
 use common\models\User;
 use common\models\UserSearch;
 use yii\filters\AccessControl;
 use yii\web\Controller;
+use yii\web\ForbiddenHttpException;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
@@ -30,10 +32,10 @@ class ProfileController extends Controller
             ],
             'access' => [
                 'class' => AccessControl::class,
-                'only' => ['add'],
+                'only' => ['add', 'update', 'change-password'],
                 'rules' => [
                     [
-                        'allow' => 'true',
+                        'allow' => true,
                         'roles' => ['@'],
                     ],
                 ],
@@ -70,32 +72,19 @@ class ProfileController extends Controller
     }
 
     /**
-     * Creates a new User model.
-     * If creation is successful, the browser will be redirected to the 'view' page.
-     * @return mixed
-     */
-    public function actionCreate()
-    {
-        $model = new User();
-
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
-        }
-
-        return $this->render('create', [
-            'model' => $model,
-        ]);
-    }
-
-    /**
      * Updates an existing User model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param integer $id
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
+     * @throws ForbiddenHttpException
      */
     public function actionUpdate($id)
     {
+        if ($id != Yii::$app->user->id) {
+            throw new ForbiddenHttpException(Yii::t('app_user', 'You can edit only your own profile'));
+        }
+
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
@@ -154,5 +143,37 @@ class ProfileController extends Controller
         }
 
         return $this->redirect(['index']);
+    }
+
+    /**
+     * Changes user's password
+     * @param $id
+     * @return string|\yii\web\Response
+     * @throws ForbiddenHttpException
+     * @throws NotFoundHttpException if the model cannot be found
+     * @throws \Exception if the model cannot be saved
+     */
+    public function actionChangePassword($id)
+    {
+        if ($id != Yii::$app->user->id) {
+            throw new ForbiddenHttpException(Yii::t('app_user', 'You can edit only your own profile'));
+        }
+
+        $arModel = $this->findModel($id);
+        $model = new ChangePasswordForm(['oldPasswordHash' => $arModel->password_hash]);
+
+        if ($model->load(Yii::$app->request->post()) && $model->validate()) {
+            $arModel->setPassword($model->password);
+            if ($arModel->save()) {
+                Yii::$app->session->setFlash('success', Yii::t('app_user','New password saved.'));
+                return $this->redirect(['view', 'id' => $arModel->id]);
+            } else {
+                throw new \Exception();
+            }
+        }
+
+        return $this->render('change-password', [
+            'model' => $model,
+        ]);
     }
 }
