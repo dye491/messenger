@@ -1,18 +1,16 @@
 <?php
 
 use yii\helpers\Html;
-use yii\widgets\DetailView;
 
 /* @var $this yii\web\View */
 /* @var $model common\models\User */
 
 $this->title = $model->username;
-//$this->params['breadcrumbs'][] = ['label' => Yii::t('app_user', 'Users'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="user-view">
 
-    <h1><?= Html::encode($this->title . ' (' . ($model->online ? 'online' : 'offline') . ')') ?></h1>
+    <h1><?= Html::encode($this->title . ' (' . ($model->online ? Yii::t('app_user','online') : Yii::t('app_user','offline')) . ')') ?></h1>
 
     <div class="row h4">
         <div class="col-sm-2">
