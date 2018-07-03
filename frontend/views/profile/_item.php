@@ -4,10 +4,10 @@
 /* @var $model common\models\User */
 
 use yii\helpers\Html;
-use yii\widgets\ActiveForm;
+use frontend\helpers\ColorHelper;
 
 ?>
-<div style="width: 125px;height: 125px; background-color:<?= $model->getBgColor() ?>;padding-top: 32px;text-align: center;border-radius: 50%;margin-bottom: 50px">
+<div style="width: 125px;height: 125px; background-color:<?= ColorHelper::color($model->id) ?>;padding-top: 32px;text-align: center;border-radius: 50%;margin-bottom: 50px">
     <?= Html::a($model->username, ['/profile/view', 'id' => $model->id]) ?><br>
     <?= $model->online ? Yii::t('app_user', 'online') : Yii::t('app_user', 'offline') ?><br>
     <?php if (!Yii::$app->user->isGuest): ?>
