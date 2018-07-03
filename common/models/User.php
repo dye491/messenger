@@ -227,15 +227,6 @@ class User extends ActiveRecord implements IdentityInterface
     }
 
     /**
-     * @return string
-     */
-    public function getBgColor()
-    {
-        $angle = 15 * ($this->id % 12);
-        return "hsl($angle,70%,50%)";
-    }
-
-    /**
      * Returns a relational query for user's contacts
      *
      * @return ActiveQueryInterface
