@@ -44,7 +44,16 @@ $this->params['breadcrumbs'][] = $this->title;
                 },
                 'options' => ['width' => '20%'],
             ],
-            'text:ntext',
+            [
+                'attribute' => 'text',
+                'content' => function ($model) {
+                    $value = Html::encode($model->text);
+                    if ($model->new && $model->to == Yii::$app->user->id) {
+                        return Html::tag('b', $value);
+                    }
+                    return $value;
+                },
+            ],
         ],
     ]); ?>
     <?php Pjax::end(); ?>
