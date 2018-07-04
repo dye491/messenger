@@ -29,4 +29,6 @@ return [
     'Old password' => 'Старый пароль',
     'New password' => 'Новый пароль',
     'New password saved.' => 'Новый пароль успешно сохранен.',
+    'Before write to {username} first add him or her to your contact list' =>
+        'Чтобы написать пользователю {username}, сначала добавьте его в список контактов!',
 ];

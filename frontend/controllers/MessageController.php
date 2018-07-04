@@ -3,12 +3,14 @@
 namespace frontend\controllers;
 
 use common\models\User;
+use frontend\filters\ContactAccessRule;
 use Yii;
 use common\models\Message;
 use common\models\MessageSearch;
 use yii\data\ActiveDataProvider;
 use yii\filters\AccessControl;
 use yii\web\Controller;
+use yii\web\ForbiddenHttpException;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
@@ -33,11 +35,33 @@ class MessageController extends Controller
             ],
             'access' => [
                 'class' => AccessControl::class,
-                'only' => ['inbox', 'sent', 'dialog'],
+                'only' => ['inbox', 'sent'],
                 'rules' => [
                     [
                         'allow' => true,
                         'roles' => ['@'],
+                    ],
+                ],
+            ],
+            'accessDialog' => [
+                'class' => AccessControl::class,
+                'only' => ['dialog'],
+                'rules' => [
+                    [
+                        'roles' => ['@'],
+                        'class' => ContactAccessRule::class,
+                        'actions' => ['dialog'],
+                        'denyCallback' => function ($rule, $action) {
+                            $contact_id = Yii::$app->request->queryParams['contact_id'];
+                            $contact = User::findOne(['id' => $contact_id]);
+                            $username = $contact ? $contact->username : null;
+                            throw new ForbiddenHttpException(
+                                Yii::t('app_user',
+                                    "Before write to {username} first add him or her to your contact list",
+                                    ['username' => $username]
+                                )
+                            );
+                        },
                     ],
                 ],
             ],
