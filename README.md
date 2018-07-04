@@ -8,4 +8,6 @@ Note: After migration is done there is two users:
 - mary@example.com, password 123456 
 - pete@example.com, password 123456
 
-You can use these accounts or create new account by doing signup. 
+You can use these accounts or create new account by doing signup.
+
+See [Class-diagram](messenger.png) 
