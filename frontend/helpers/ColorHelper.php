@@ -6,7 +6,7 @@ class ColorHelper
 {
     public static function color($id)
     {
-        $angle = 15 * ($id % 12);
+        $angle = 45 * ($id % 16);
         return "hsl($angle, 70%, 50%)";
     }
 }
