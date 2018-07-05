@@ -203,12 +203,36 @@ class MessageController extends Controller
                     'from' => $contact_id,
                 ],
             ])->orderBy(['id' => SORT_DESC]),
+            'pagination' => [
+                'pageSize' => 10,
+            ],
         ]);
+
+        $this->clearNewMessageFlag($dataProvider);
 
         return $this->render('dialog', [
             'model' => $model,
             'dataProvider' => $dataProvider,
             'contactName' => User::findOne(['id' => $contact_id])->username,
         ]);
+    }
+
+    protected function clearNewMessageFlag($dataProvider)
+    {
+        $page = 0;
+        if (isset(Yii::$app->request->queryParams['page'])) {
+            $page = Yii::$app->request->queryParams['page'] - 1;
+        }
+
+        $offset = $page * $dataProvider->pagination->pageSize;
+        $limit = $dataProvider->pagination->limit;
+        $models = $dataProvider->query->offset($offset)->limit($limit)->all();
+
+        foreach ($models as $model) {
+            if ($model->new && $model->to == Yii::$app->user->id) {
+                $model->new = false;
+                $model->save();
+            }
+        }
     }
 }

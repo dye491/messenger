@@ -7,11 +7,7 @@
 
 use yii\helpers\Html;
 
-$sent = $model->sender->id == Yii::$app->user->id;
-if (!$sent && $model->new) {
-    $model->new = false;
-    $model->save();
-}
+$sent = $model->from == Yii::$app->user->id;
 ?>
 <div class="panel<?= $sent ? ' panel-success' : ' panel-default' ?>"
      style="<?= $sent ? 'margin-left' : 'margin-right' ?>: 50px;">
