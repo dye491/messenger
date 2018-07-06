@@ -3,6 +3,7 @@
 namespace frontend\controllers;
 
 use common\models\User;
+use frontend\filters\ClearNewMessageFlagFilter;
 use frontend\filters\ContactAccessRule;
 use Yii;
 use common\models\Message;
@@ -64,6 +65,16 @@ class MessageController extends Controller
                         },
                     ],
                 ],
+            ],
+            'clearNewMessageFlag' => [
+                'class' => ClearNewMessageFlagFilter::class,
+                'dataProvider' => [
+                    'class' => ActiveDataProvider::class,
+                    'pagination' => [
+                        'pageSize' => 10,
+                    ],
+                ],
+                'only' => ['dialog'],
             ],
         ];
     }
@@ -192,47 +203,21 @@ class MessageController extends Controller
             $model = new Message(['from' => Yii::$app->user->id, 'to' => $contact_id]);
         }
 
-        $dataProvider = new ActiveDataProvider([
-            'query' => Message::find()->where(['or',
-                [
-                    'from' => Yii::$app->user->id,
-                    'to' => $contact_id,
-                ],
-                [
-                    'to' => Yii::$app->user->id,
-                    'from' => $contact_id,
-                ],
-            ])->orderBy(['id' => SORT_DESC]),
-            'pagination' => [
-                'pageSize' => 10,
+        $this->dataProvider->query = Message::find()->where(['or',
+            [
+                'from' => Yii::$app->user->id,
+                'to' => $contact_id,
             ],
-        ]);
-
-        $this->clearNewMessageFlag($dataProvider);
+            [
+                'to' => Yii::$app->user->id,
+                'from' => $contact_id,
+            ],
+        ])->orderBy(['id' => SORT_DESC]);
 
         return $this->render('dialog', [
             'model' => $model,
-            'dataProvider' => $dataProvider,
+            'dataProvider' => $this->dataProvider,
             'contactName' => User::findOne(['id' => $contact_id])->username,
         ]);
-    }
-
-    protected function clearNewMessageFlag($dataProvider)
-    {
-        $page = 0;
-        if (isset(Yii::$app->request->queryParams['page'])) {
-            $page = Yii::$app->request->queryParams['page'] - 1;
-        }
-
-        $offset = $page * $dataProvider->pagination->pageSize;
-        $limit = $dataProvider->pagination->limit;
-        $models = $dataProvider->query->offset($offset)->limit($limit)->all();
-
-        foreach ($models as $model) {
-            if ($model->new && $model->to == Yii::$app->user->id) {
-                $model->new = false;
-                $model->save();
-            }
-        }
     }
 }
